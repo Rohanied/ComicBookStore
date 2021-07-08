@@ -280,6 +280,7 @@ def add_book():
 	global book_name
 	global author_name
 	global add_menu
+	global cover_name
 
 	add_menu=Tk()
 	add_menu.wm_title("Add")
@@ -291,9 +292,11 @@ def add_book():
 	book_id_label=Label(add_menu,text="Book ID (Should be 5 digit)")
 	book_label=Label(add_menu,text="Book Name")
 	author_label=Label(add_menu,text="Author Name")
+	cover_label = Label(add_menu,text="Enter cover image name with extension")
 	book_id=Entry(add_menu)
 	book_name=Entry(add_menu)
 	author_name=Entry(add_menu)
+	cover_name=Entry(add_menu)
 	addbutton1=Button(add_menu,command=add_check,text=" Add book ",bg='dark orange',height=1,width=10,font=k_font)
 
 	book_id_label.grid(row=0,sticky=E)
@@ -302,6 +305,8 @@ def add_book():
 	book_name.grid(row=1,column=1)
 	author_label.grid(row=2,sticky=E)
 	author_name.grid(row=2,column=1)
+	cover_label.grid(row=3,sticky=E)
+	cover_name.grid(row=3,column=1)
 	addbutton1.grid(columnspan=2)
 
 	add_menu.mainloop()
@@ -311,6 +316,7 @@ def add_check():
 	b_id=book_id.get()
 	b_name=book_name.get().upper()
 	a_id=author_name.get()
+	b_cover = cover_name.get()
 
 	if len(b_name)==0:
 		tkinter.messagebox.showinfo("Add Book","You did not type a book name O_O")
@@ -318,7 +324,7 @@ def add_check():
 		return(add_book)
 
 	if len(b_id)!=5 or b_id.isdigit()==False:
-		tkinter.messagebox.showinfo("Add book","Please renter the details(ID should be 5 positive integers)")
+		tkinter.messagebox.showinfo("Add book","Please re-enter the details(ID should be 5 positive integers)")
 		add_menu.lift()
 		return(add_book)
 
@@ -334,7 +340,7 @@ def add_check():
 	f22 = open ('BData.txt', 'a')
 	pos = f22.tell()
 	f33 = open ('Bindex.txt', 'a')
-	buf = b_id + '|' + b_name + '|' + a_id + '|' + 'Y' + '|' + '#'
+	buf = b_id + '|' + b_name + '|' + a_id + '|' + 'Y' + '|' +b_cover+'|'+ '#'
 	f22.write(buf)
 	f22.write('\n')
 	buf = b_id + '|' + str(pos) + '|' + '#'
@@ -480,9 +486,10 @@ def Main_Menu():
 
 	#Bunch of labels
 	status = Label(base,text=("Date and time logged in: " + current_time),bd=1,relief=SUNKEN,anchor=W,bg='light pink')
-	orionLabel=Label(base, text="CENTRAL LIBRARY",bg='dark orange',font=("Castellar", "50","bold","italic","underline"),fg="black")
+	orionLabel=Label(base, text="CENTRAL COMICS",bg='IndianRed1',font=("Castellar", "50","bold","italic","underline"),fg="black")
 	welcomeLabel=Label(base,text=("Welcome! "+id),font=("Freestyle Script","50","bold"))
-	imageLibrary = PhotoImage(file="giphy.gif")
+	image = Image.open("comic_cover.jpg")
+	photo = ImageTk.PhotoImage(image)
 	topFrame=Frame(base)
 	bottomFrame=Frame(base)
 
@@ -490,15 +497,15 @@ def Main_Menu():
 	status.pack(side=BOTTOM,fill=X)
 	orionLabel.pack(fill=X)
 	welcomeLabel.pack()
-	Label(base, image=imageLibrary).pack()
+	Label(base, image=photo, bg="MediumPurple2").pack()
 	topFrame.pack()
 	bottomFrame.pack(side=BOTTOM)
 
 	#Buttons
-	borrow_but=Button(bottomFrame,bg="black",fg="white",text="Borrow books",font=in_font,height=5,width=15,command=borrow_in)
-	return_but=Button(bottomFrame,bg="dark orange",text="Return books",font=in_font,height=5,width=15,command=return_in)
-	search_but=Button(bottomFrame,bg="black",fg="white",text="Search for books",font=in_font,height=5,width=15,command=search_in)
-	feedback_but=Button(bottomFrame,bg="dark orange",text="Feedback",font=in_font,height=5,width=15,command=feedback_in)
+	borrow_but=Button(bottomFrame,bg="firebrick1",fg="white",text="Browse Comics",font=in_font,height=5,width=15,command=borrow_in)
+	return_but=Button(bottomFrame,bg="firebrick1",fg="white",text="Borrowed Comics",font=in_font,height=5,width=15,command=return_in)
+	search_but=Button(bottomFrame,bg="firebrick1",fg="white",text="Search for Comics",font=in_font,height=5,width=15,command=search_in)
+	feedback_but=Button(bottomFrame,bg="firebrick1",fg="white", text="Purchased Comics",font=in_font,height=5,width=15,command=feedback_in)
 
 	#Positioning of buttons
 	borrow_but.pack(side=LEFT)
@@ -606,7 +613,7 @@ def buy_book():
 		l2 = l2.rstrip('\n')
 		w2 = l2.split('|')
 		if(w2[3] == 'Y'):
-			l3 = w2[0] + '|' + w2[1] + '|' + w2[2] + '|' + 'Sold out|#'
+			l3 = w2[0] + '|' + w2[1] + '|' + w2[2] + '|' + 'P|#'
 			f2.seek(pos)
 			f2.write(l3)
 			f2.close()
@@ -617,6 +624,7 @@ def buy_book():
 			f3.write(buf)
 			f3.close()
 			key_sort('Purchase.txt')
+
 			Done2=tkinter.messagebox.askyesno("Borrow","Do you want to buy/borrow another book?")
 			if Done2==True:
 				borrow_menu.destroy()
@@ -628,18 +636,64 @@ def buy_book():
 			borrow_menu.lift()
 
 def view_cover():
-	root = Tk()
 
-	# Create a photoimage object of the image in the path
-	image1 = Image.open("giphy.gif")
-	test = ImageTk.PhotoImage(image1)
+	# bbook=borrow_entry1.get().upper()
 
-	label1 = tkinter.Label(image=test)
-	label1.image = test
+	# pos = binary_search('Bindex.txt', bbook)
+	# if pos == -1:
+	# 	tkinter.messagebox.showinfo("Borrow","The book that you had entered is not in our database,sorry,please enter a different book")
+	# 	borrow_menu.lift()
+	# else:
+	# 	f2 = open('BData.txt', 'r+')
+	# 	f2.seek(pos)
+	# 	l2 = f2.readline()
+	# 	l2 = l2.rstrip('\n')
+	# 	w2 = l2.split('|')
+	# 	imageName = "comic_cover.jpg" #w2[4]
+	
+	# 	image_root = Tk()
+	# 	image_root.geometry("1255x944")
+	# 	image = Image.open(imageName)
+	# 	photo = ImageTk.PhotoImage(image)
+	# 	label = Label(image=photo)
+	# 	label.pack()
+	# 	image_root.mainloop()
+	# view_cover =Tk()
+	# view_cover.geometry("1255x944")
+	# image = Image.open("comic_cover.jpg")
+	# photo = ImageTk.PhotoImage(image)
+	# image_label = Label(view_cover, image=photo)
+	# image_label.pack()
+	# view_cover.mainloop()
 
-	# Position image
-	label1.place(x=0, y=0)
-	root.mainloop()
+
+	#  # setup new window
+    # new_window = Toplevel(borrow_menu)
+    # # get image
+    # image = ImageTk.PhotoImage(Image.open("comic_cover.jpg"))
+    # # load image
+    # panel = Label(new_window, image=image)
+    # panel.image = image
+    # panel.pack()
+
+	# cover_view = Toplevel()
+	# image = Image.open("giphy.gif")
+	# if(image):
+	# 	print("Image")
+	# else:
+	# 	print("Image not there")
+	# photo = ImageTk.PhotoImage(image)
+	# image_label = Label(cover_view,  text="Image")
+	# image_label.grid(row=0,column=0)
+	#cover_view.mainloop()
+
+	image_window1 = Tk()
+	canvas = Canvas(image_window1, width=300, height=300)
+	canvas.pack()
+	img = PhotoImage(file='giphy.gif')
+	canvas.create_image(20,20,anchor=NW, image=img)
+	image_window1.mainloop()
+
 
 
 def borrow_check():
