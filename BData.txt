@@ -2,9 +2,9 @@
 12090|ATTACK ON TITANS|Hajime Isayama|Y|image.jpg2|#
 12091|JUJUTSU KAISEN|Gege akutami|Y|image.jpg3|#
 12092|HARRY POTTER CHAMBER OF SECRETS|J.K Rowling|Y|image.jpg4|#
-12093|HARRY POTTER AND THE PRISONER OF AZKABAN|J.K Rowling|Y|image.jpg3|#
+12093|HARRY POTTER AND THE PRISONER OF AZKABAN|J.K Rowling|P|#mage.jpg3|#
 12094|HARRY POTTER AND THE PHILOSOPHER STONE|J.K Rowling|Y|image.jpg4|#
 12095|YOUR NAME|mokoto|Y|#mage.jpg6|#
-12096|DEMON SLAYER|gojo|Y|image.jpg5|#
+12096|DEMON SLAYER|gojo|P|#mage.jpg5|#
 12097|NARUTO|kishimoto|Y|image.jpg7|#
 12098|ONE PUNCH MAN|one|Y|image.jpg8|#
