@@ -529,7 +529,7 @@ def Main_Menu():
 	borrow_but=Button(bottomFrame,bg="firebrick1",fg="white",text="Browse Comics",font=in_font,height=5,width=15,command=borrow_in)
 	return_but=Button(bottomFrame,bg="firebrick1",fg="white",text="Borrowed Comics",font=in_font,height=5,width=15,command=return_in)
 	search_but=Button(bottomFrame,bg="firebrick1",fg="white",text="Search for Comics",font=in_font,height=5,width=15,command=search_in)
-	feedback_but=Button(bottomFrame,bg="firebrick1",fg="white", text="Purchased Comics",font=in_font,height=5,width=15,command=feedback_in)
+	feedback_but=Button(bottomFrame,bg="firebrick1",fg="white", text="Purchased Comics",font=in_font,height=5,width=15,command=purchased_books)
 
 	#Positioning of buttons
 	borrow_but.pack(side=LEFT)
@@ -928,6 +928,77 @@ def search_check():
 
 		search_result.pack()
 		search_menu2.mainloop()
+
+def purchased_books():
+	global return_entry1
+	global return_menu
+	global record_verification
+
+	return_menu=Tk()
+	return_menu.minsize(900,500)
+	return_menu.maxsize(1200,500)
+	return_menu.wm_title("Purchased")
+	return_menu.resizable(0,0)
+
+	Id=[]
+	Title = []
+	Author = []
+	Availability = []
+	record_verification = []
+
+	f = open ("Purchase.txt")
+	norecord = 0
+	for line in f:
+		line = line.rstrip()
+		words = line.split('|')
+		if(words[0] == id):
+			pos = binary_search('Bindex.txt', words[1])
+			if pos != -1:
+				norecord += 1
+				f2 = open('BData.txt', 'r')
+				f2.seek(pos)
+				l1 = f2.readline()
+				l1 = l1.rstrip()
+				w1 = l1.split('|')
+				Id.append(w1[0])
+				record_verification.append(w1[0])
+				Title.append(w1[1])
+				Author.append(w1[2])
+				Availability.append(w1[3])
+	f.close()
+
+	return_list=Listbox(return_menu,height=50,width=20)
+	return_list1=Listbox(return_menu,height=50,width=50)
+	return_list2=Listbox(return_menu,height=50,width=50)
+	
+
+	for num in range(0,norecord):
+		return_list.insert(0,Id[num])
+		return_list1.insert(0,Title[num])
+		return_list2.insert(0,Author[num])
+		
+	return_list.configure(background="light grey")
+	return_list1.configure(background="pink")
+	return_list2.configure(background="pink")
+	
+	return_label=Label(return_menu,text="Id")
+	return_label2=Label(return_menu,text="Title")
+	return_label3=Label(return_menu,text="Author")
+	
+
+
+	return_label.grid(row=3,column=0)
+	return_label2.grid(row=3,column=1)
+	return_label3.grid(row=3,column=4)
+	
+
+	return_list.grid(row=4,column=0)
+	return_list1.grid(row=4,column=1)
+	return_list2.grid(row=4,column=4)
+	
+
+	return_menu.mainloop()
+
 
 
 def feedback_in():
