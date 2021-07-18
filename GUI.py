@@ -7,6 +7,8 @@ import os
 import hashlib
 import binascii
 from PIL import ImageTk, Image
+import matplotlib.pyplot as plt 
+import matplotlib.image as mpimg
 
 
 def login_in():
@@ -275,6 +277,30 @@ def binary_search(fname, search_key):
 	return -1
 
 
+def binary_search_name(name):
+	names =[]
+	ids = []
+	fin = open("Bdata.txt",'r')
+	for lx in fin:
+		lx = lx.rstrip()
+		wx = lx.split('|')
+		names.append((wx[1]))
+		ids.append(wx[0])
+	print(names)
+	fin.close()
+	l = 0
+	r = len(names) - 1
+	while l <= r:
+		mid = (l + r)//2
+		if names[mid] == name:
+			return int(ids[names.index(names[mid])])
+		elif names[mid] <= name:
+			l = mid + 1
+		else:
+			r = mid - 1
+	return -1
+
+
 def add_book():
 	global book_id
 	global book_name
@@ -520,7 +546,7 @@ def borrow_in():
 	global borrow_entry1
 	global borrow_menu
 
-	borrow_menu=Tk()
+	borrow_menu=Toplevel()
 
 	borrow_menu.wm_title("Borrow")
 	borrow_menu.minsize(900,550)
@@ -552,6 +578,7 @@ def borrow_in():
 	borrow_list1=Listbox(borrow_menu,height=50,width=50)
 	borrow_list2=Listbox(borrow_menu,height=50,width=50)
 	borrow_list3=Listbox(borrow_menu,height=50,width=20)
+	borrow_list4=Listbox(borrow_menu,height=50,width=20)
 
 	for num in range(0,norecord):
 		borrow_list.insert(0,Id[num])
@@ -589,7 +616,7 @@ def borrow_in():
 	borrow_list1.grid(row=7,column=1)
 	borrow_list2.grid(row=7,column=4)
 	borrow_list3.grid(row=7,column=7)
-	borrow_menu.mainloop()
+	#borrow_menu.mainloop()
 
 def buy_book():
 	
@@ -637,63 +664,22 @@ def buy_book():
 
 def view_cover():
 
-	# bbook=borrow_entry1.get().upper()
+	bbook=borrow_entry1.get().upper()
 
-	# pos = binary_search('Bindex.txt', bbook)
-	# if pos == -1:
-	# 	tkinter.messagebox.showinfo("Borrow","The book that you had entered is not in our database,sorry,please enter a different book")
-	# 	borrow_menu.lift()
-	# else:
-	# 	f2 = open('BData.txt', 'r+')
-	# 	f2.seek(pos)
-	# 	l2 = f2.readline()
-	# 	l2 = l2.rstrip('\n')
-	# 	w2 = l2.split('|')
-	# 	imageName = "comic_cover.jpg" #w2[4]
+	pos = binary_search('Bindex.txt', bbook)
+	if pos == -1:
+		tkinter.messagebox.showinfo("Borrow","The book that you had entered is not in our database,sorry,please enter a different book")
+		borrow_menu.lift()
+	else:
+		f2 = open('BData.txt', 'r+')
+		f2.seek(pos)
+		l2 = f2.readline()
+		l2 = l2.rstrip('\n')
+		w2 = l2.split('|')
+		imageName = w2[4]
 	
-	# 	image_root = Tk()
-	# 	image_root.geometry("1255x944")
-	# 	image = Image.open(imageName)
-	# 	photo = ImageTk.PhotoImage(image)
-	# 	label = Label(image=photo)
-	# 	label.pack()
-	# 	image_root.mainloop()
-	# view_cover =Tk()
-	# view_cover.geometry("1255x944")
-	# image = Image.open("comic_cover.jpg")
-	# photo = ImageTk.PhotoImage(image)
-	# image_label = Label(view_cover, image=photo)
-	# image_label.pack()
-	# view_cover.mainloop()
-
-
-	#  # setup new window
-    # new_window = Toplevel(borrow_menu)
-    # # get image
-    # image = ImageTk.PhotoImage(Image.open("comic_cover.jpg"))
-    # # load image
-    # panel = Label(new_window, image=image)
-    # panel.image = image
-    # panel.pack()
-
-	# cover_view = Toplevel()
-	# image = Image.open("giphy.gif")
-	# if(image):
-	# 	print("Image")
-	# else:
-	# 	print("Image not there")
-	# photo = ImageTk.PhotoImage(image)
-	# image_label = Label(cover_view,  text="Image")
-	# image_label.grid(row=0,column=0)
-	#cover_view.mainloop()
-
-	image_window1 = Tk()
-	canvas = Canvas(image_window1, width=300, height=300)
-	canvas.pack()
-	img = PhotoImage(file='giphy.gif')
-	canvas.create_image(20,20,anchor=NW, image=img)
-	image_window1.mainloop()
-
+		image = Image.open(imageName)
+		image.show()
 
 
 def borrow_check():
@@ -909,9 +895,9 @@ def search_check():
 		tkinter.messagebox.showinfo("Search","You did not type anything O_O")
 		return(search_in)
 
-	pos = binary_search('Bindex.txt', search_word)
+	book_id = binary_search_name(search_word)
 
-	if (pos == -1):
+	if (book_id == -1):
 		tkinter.messagebox.showinfo("Search","Sorry,this book does not exist in our database")
 	else:
 		search_menu2=Tk()
@@ -919,12 +905,15 @@ def search_check():
 		search_menu2.attributes("-topmost",True)
 		tkinter.messagebox.showinfo("Search","It is in our database!")
 
+		pos = binary_search("Bindex.txt",str(book_id))
+
 		search_result=Listbox(search_menu2,height=10,width=50)
 		f2 = open('BData.txt', 'r')
 		f2.seek(pos)
 		l1 = f2.readline()
 		l1 = l1.rstrip()
 		w1 = l1.split('|')
+		print(pos)
 		b_id = w1[0]
 		book = w1[1]
 		author = w1[2]
