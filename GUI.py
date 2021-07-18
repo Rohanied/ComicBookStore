@@ -7,8 +7,6 @@ import os
 import hashlib
 import binascii
 from PIL import ImageTk, Image
-import matplotlib.pyplot as plt 
-import matplotlib.image as mpimg
 
 
 def login_in():
@@ -37,10 +35,10 @@ def login_in():
 	id_input_login.grid(row=0,column=1)
 	password_label.grid(row=1,sticky=E)
 	password_input_login.grid(row=1,column=1)
-	loginbutton1.grid(columnspan=2)
-	registerbutton.grid(columnspan=2)
-	feedbackbutton.grid(columnspan=2)
-	adminbutton.grid(columnspan=2)
+	loginbutton1.grid(row=0,column=1)
+	registerbutton.grid(row=0,column=1)
+	feedbackbutton.grid(row=0,column=1))
+	adminbutton.grid(row=0,column=1)
 
 	login_menu.mainloop()
 
