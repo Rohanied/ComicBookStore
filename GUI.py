@@ -25,10 +25,10 @@ def login_in():
 	password_label=Label(login_menu,text="Password")
 	id_input_login=Entry(login_menu)
 	password_input_login=Entry(login_menu)
-	loginbutton1=Button(login_menu,command=login_check,text=" Login ",bg='light blue',height=1,width=7,font=k_font)
-	registerbutton=Button(login_menu,command=register_in,text=" Register ",bg='light green',height=1,width=7,font=k_font)
-	feedbackbutton=Button(login_menu,command=feedback_read,text=" Feedback ",bg='light blue',height=1,width=7,font=k_font)
-	adminbutton=Button(login_menu,command=admin_in,text=" Admin Login ",bg='light green',height=1,width=10,font=k_font)
+	loginbutton1=Button(login_menu,command=login_check,text="  Login  ",bg='RoyalBlue1',height=1,width=10,font=k_font)
+	registerbutton=Button(login_menu,command=register_in,text="  Register  ",bg='RoyalBlue1',height=1,width=10,font=k_font)
+	feedbackbutton=Button(login_menu,command=feedback_read,text="  Feedback  ",bg='OrangeRed2',height=1,width=10,font=k_font)
+	adminbutton=Button(login_menu,command=admin_in,text=" Admin Login ",bg='OrangeRed2',height=1,width=10,font=k_font)
 	password_input_login.config(show="*")
 
 	id_label.grid(row=0,sticky=E)
@@ -502,7 +502,7 @@ def Main_Menu():
 	base = Tk()
 	#Window title and size optimization
 	base.wm_title("CENTRAL LIBRARY")
-	base.minsize(600,600)
+	base.minsize(450,450)
 
 	in_font = tkinter.font.Font(family='Lucida Calligraphy', size=15, weight=tkinter.font.BOLD)
 	current_time1=datetime.datetime.now()
@@ -510,8 +510,8 @@ def Main_Menu():
 
 	#Bunch of labels
 	status = Label(base,text=("Date and time logged in: " + current_time),bd=1,relief=SUNKEN,anchor=W,bg='light pink')
-	orionLabel=Label(base, text="CENTRAL COMICS",bg='IndianRed1',font=("Castellar", "50","bold","italic","underline"),fg="black")
-	welcomeLabel=Label(base,text=("Welcome! "+id),font=("Freestyle Script","50","bold"))
+	orionLabel=Label(base, text="SUPERHEROES AND COMICS",bg='blanched almond',font=("Roboto", "50","bold","italic"),fg="black")
+	welcomeLabel=Label(base,text=("WELCOME! "+id),font=("Futura","30","bold"))
 	image = Image.open("comic_cover.jpg")
 	photo = ImageTk.PhotoImage(image)
 	topFrame=Frame(base)
@@ -521,21 +521,22 @@ def Main_Menu():
 	status.pack(side=BOTTOM,fill=X)
 	orionLabel.pack(fill=X)
 	welcomeLabel.pack()
-	Label(base, image=photo, bg="MediumPurple2").pack()
+	Label(base, image=photo).pack()
 	topFrame.pack()
 	bottomFrame.pack(side=BOTTOM)
 
 	#Buttons
-	borrow_but=Button(bottomFrame,bg="firebrick1",fg="white",text="Browse Comics",font=in_font,height=5,width=15,command=borrow_in)
-	return_but=Button(bottomFrame,bg="firebrick1",fg="white",text="Borrowed Comics",font=in_font,height=5,width=15,command=return_in)
-	search_but=Button(bottomFrame,bg="firebrick1",fg="white",text="Search for Comics",font=in_font,height=5,width=15,command=search_in)
-	feedback_but=Button(bottomFrame,bg="firebrick1",fg="white", text="Purchased Comics",font=in_font,height=5,width=15,command=purchased_books)
+	borrow_but=Button(bottomFrame,bg="light coral",fg="black",text="Browse Comics",font=in_font,height=1,width=14,command=borrow_in).grid(row=0,column=0)
+	return_but=Button(bottomFrame,bg="light coral",fg="black",text="Borrowed Comics",font=in_font,height=1,width=14,command=return_in).grid(row=1,column=0)
+	search_but=Button(bottomFrame,bg="light coral",fg="black",text="Search for Comics",font=in_font,height=1,width=14,command=search_in).grid(row=1,column=6)
+	feedback_but=Button(bottomFrame,bg="light coral",fg="black", text="Purchased Comics",font=in_font,height=1,width=14,command=purchased_books).grid(row=0,column=6)
 
 	#Positioning of buttons
-	borrow_but.pack(side=LEFT)
-	return_but.pack(side=LEFT)
-	search_but.pack(side=LEFT)
-	feedback_but.pack(side=LEFT)
+	# borrow_but.pack(side=LEFT)
+	# return_but.pack(side=LEFT)
+
+	# search_but.pack(side=LEFT)
+	# feedback_but.pack(side=LEFT)
 
 	base.mainloop()
 
